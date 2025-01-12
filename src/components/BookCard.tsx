@@ -12,8 +12,6 @@ export default function BookCard({
   coverUrl,
   isLoanedBook = false,
 }: Book) {
-  console.log("BookCard props:", { coverColor, coverUrl, title });
-
   return (
     <li className={cn(isLoanedBook && "xs:w-52 w-full")}>
       <Link
