@@ -27,7 +27,7 @@ export const sendEmail = async ({
       provider: resend({ token: config.env.resendToken }),
     },
     body: {
-      from: "David Bobe <contact@davidbobe.com>",
+      from: "David Bobe <david@davidbobe.com>",
       to: [email],
       subject,
       html: message,
