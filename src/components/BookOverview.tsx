@@ -1,8 +1,14 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import BookCover from "./BookCover";
+import { db } from "@/database/db";
+import { users } from "@/database/schema";
+import { eq } from "drizzle-orm";
 
-export default function BookOverview({
+interface Props extends Book {
+  userId: string;
+}
+export default async function BookOverview({
   title,
   author,
   genre,
@@ -14,7 +20,22 @@ export default function BookOverview({
   coverUrl,
   videoUrl,
   summary,
-}: Book) {
+  id,
+  userId,
+}: Props) {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  const borrowingEligibility = {
+    isEligible: availableCopies > 0 && user?.status === "APPROVED",
+    message:
+      availableCopies <= 0
+        ? "Book is not available"
+        : "You are not eligible to borrow this book",
+  };
   return (
     <section className="book-overview">
       <div className="flex flex-1 flex-col gap-5">
@@ -41,6 +62,14 @@ export default function BookOverview({
           </p>
         </div>
         <p className="book-description">{description}</p>
+
+        {/* {user && (
+          <BorrowBook
+            bookId={id}
+            userId={userId}
+            borrowingEligibility={borrowingEligibility}
+          />
+        )} */}
 
         <Button className="book-overview_btn">
           <Image src="/icons/book.svg" alt="book" width={20} height={20} />
