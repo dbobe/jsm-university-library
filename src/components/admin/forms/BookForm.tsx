@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import ColorPicker from "../ColorPicker";
 
 interface BookFormProps {
   type?: "create" | "update";
@@ -182,7 +183,12 @@ export default function BookForm({ type, ...book }: BookFormProps) {
               <FormLabel className="text-base font-normal text-dark-500">
                 Primary Color
               </FormLabel>
-              <FormControl>{/* TODO: Add color picker */}</FormControl>
+              <FormControl>
+                <ColorPicker
+                  value={field.value}
+                  onPickerChange={field.onChange}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
