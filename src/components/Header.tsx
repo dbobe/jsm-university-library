@@ -54,15 +54,13 @@ export default function Header({ session }: { session: Session }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>
-                <Button variant="ghost" className="w-full">
-                  <Link
-                    href="/my-profile"
-                    className="flex gap-2 flex-row items-center justify-start"
-                  >
-                    <User />
-                    <p>My Profile</p>
-                  </Link>
-                </Button>
+                <Link
+                  href="/my-profile"
+                  className="flex gap-2 flex-row items-center justify-start"
+                >
+                  <User />
+                  <p>My Profile</p>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
