@@ -4,6 +4,7 @@ import BookCover from "./BookCover";
 import { db } from "@/database/db";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import BorrowBook from "./BorrowBook";
 
 interface Props extends Book {
   userId: string;
@@ -29,6 +30,8 @@ export default async function BookOverview({
     .where(eq(users.id, userId))
     .limit(1);
 
+  console.log("🚀 ~ user:", user);
+
   const borrowingEligibility = {
     isEligible: availableCopies > 0 && user?.status === "APPROVED",
     message:
@@ -36,6 +39,7 @@ export default async function BookOverview({
         ? "Book is not available"
         : "You are not eligible to borrow this book",
   };
+  console.log("🚀 ~ borrowingEligibility:", borrowingEligibility);
   return (
     <section className="book-overview">
       <div className="flex flex-1 flex-col gap-5">
@@ -63,18 +67,13 @@ export default async function BookOverview({
         </div>
         <p className="book-description">{description}</p>
 
-        {/* {user && (
+        {user && (
           <BorrowBook
             bookId={id}
             userId={userId}
             borrowingEligibility={borrowingEligibility}
           />
-        )} */}
-
-        <Button className="book-overview_btn">
-          <Image src="/icons/book.svg" alt="book" width={20} height={20} />
-          <p className="font-bebas-neue text-xl text-dark-100">Borrow</p>
-        </Button>
+        )}
       </div>
 
       <div className="relative flex flex-1 justify-center">

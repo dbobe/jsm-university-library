@@ -5,6 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User } from "lucide-react";
+import { Button } from "./ui/button";
+import { signOut } from "next-auth/react";
 
 export default function Header({ session }: { session: Session }) {
   const pathname = usePathname();
@@ -25,7 +34,7 @@ export default function Header({ session }: { session: Session }) {
             library
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="/my-profile">
             <Avatar>
               <AvatarFallback className="bg-amber-100">
@@ -33,6 +42,42 @@ export default function Header({ session }: { session: Session }) {
               </AvatarFallback>
             </Avatar>
           </Link>
+        </li> */}
+        <li>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarFallback className="bg-amber-100">
+                  {getInitials(session.user?.name || "IN")}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Button variant="ghost" className="w-full">
+                  <Link
+                    href="/my-profile"
+                    className="flex gap-2 flex-row items-center justify-start"
+                  >
+                    <User />
+                    <p>My Profile</p>
+                  </Link>
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  variant="ghost"
+                  className="w-full"
+                  onClick={async () => await signOut()}
+                >
+                  <div className="flex gap-2 flex-row items-center justify-start">
+                    <LogOut />
+                    <p>Logout</p>
+                  </div>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </li>
       </ul>
     </header>
